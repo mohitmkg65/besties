@@ -21,6 +21,7 @@
     "react-router-dom": "^7.6.0",
     "react-toastify": "^11.0.5",
     "remixicon": "^4.6.0",
+    "socket.io-client": "^4.8.1",
     "swr": "^2.3.3",
     "tailwindcss": "^4.1.5",
     "uuid": "^11.1.0"

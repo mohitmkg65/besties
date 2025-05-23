@@ -1,8 +1,16 @@
+import { useEffect } from "react"
 import Avatar from "../shared/Avatar"
 import Button from "../shared/Button"
 import Input from "../shared/Input"
+import socket from "../../lib/socket"
 
 const Chat = () => {
+    useEffect(() => {
+        socket.on("connect", () => {
+            console.log("Socket connected")
+        })
+    }, [])
+    
     return (
         <div>
             <div className="h-[450px] overflow-auto space-y-12 pr-6 relative">
