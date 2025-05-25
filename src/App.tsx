@@ -8,7 +8,8 @@ import Signup from "./components/Signup"
 import Layout from "./components/app/Layout"
 import Dashboard from "./components/app/Dashboard"
 import Post from "./components/app/Post"
-import Freinds from "./components/app/Freinds"
+// import Freinds from "./components/app/Freinds"
+import FreindList from "./components/app/freind/FreindList";
 import Video from "./components/app/Video";
 import Audio from "./components/app/Audio";
 import Chat from "./components/app/Chat";
@@ -34,7 +35,7 @@ const App = () => {
             <Route path="/app" element={<Layout />}>
               <Route path="dashboard" element={<Dashboard />}></Route>
               <Route path="my-posts" element={<Post />}></Route>
-              <Route path="freinds" element={<Freinds />}></Route>
+              <Route path="freinds" element={<FreindList />}></Route>
               <Route path="video-chat" element={<Video />}></Route>
               <Route path="audio-chat" element={<Audio />}></Route>
               <Route path="chat" element={<Chat />}></Route>

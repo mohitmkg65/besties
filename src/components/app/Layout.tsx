@@ -9,14 +9,23 @@ import {v4 as uuid} from "uuid"
 import useSWR, { mutate } from "swr"
 import Fetcher from "../../lib/Fetcher"
 import CatchError from "../../lib/CatchError"
-import FreindSuggestion from "./FreindSuggestion"
-import FreindRequest from "./FreindRequest"
+import FriedSuggestion from "./freind/FreindSuggestion"
+import FreindRequest from "./freind/FreindRequest"
+import FreindList from "./freind/FreindList"
+import { useMediaQuery } from 'react-responsive'
+import IconButton from "../shared/IconButton"
+import Logo from "../shared/Logo"
+// import FreindSuggestion from "./FreindSuggestion"
+// import FreindRequest from "./FreindRequest"
 const EightMinuteInMs = (5*60)*1000
 
+
 const Layout = () => {
-    const [leftAsideSize, setleftAsideSize] = useState(350)
+    const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+    const [leftAsideSize, setleftAsideSize] = useState(0)
+    const [collapseSize, setCollapseSize] = useState(0)
     const rightAsideSize = 450
-    const collapseSize = 140
+    // const collapseSize = 140
     const { pathname } = useLocation()
     const navigate = useNavigate()
     const {session, setSession} = useContext(Context)
@@ -24,6 +33,9 @@ const Layout = () => {
         refreshInterval: EightMinuteInMs,
         shouldRetryOnError: false
     })
+
+    const friendsUiBlacklist = ["/app/freinds", "/app/chat", "/app/audio-chat", "/app/video-chat"]
+    const isBlacklisted = friendsUiBlacklist.some((path)=>pathname === path)
     
     useEffect(() => {
         if(error){
@@ -31,9 +43,14 @@ const Layout = () => {
         }
     }, [error])
 
+    useEffect(()=>{
+        setleftAsideSize(isMobile ? 0 : 350)
+        setCollapseSize(isMobile ? 0 : 140)
+    }, [isMobile])
+
     const sectionDimension = {
-        width: `calc(100% - ${leftAsideSize + rightAsideSize}px)`,
-        marginLeft: leftAsideSize,
+        width: isMobile ? '100%' : `calc(100% - ${leftAsideSize + rightAsideSize}px)`,
+        marginLeft: isMobile ? 0 : leftAsideSize,
         transition: '0.3s'
     }
     const menus = [
@@ -102,8 +119,19 @@ const Layout = () => {
 
     return (
         <div className="min-h-screen">
-            <aside className="bg-white fixed top-0 left-0 h-full p-8 overflow-auto" style={{width: leftAsideSize, transition: '0.3s'}}>
-                <div className="space-y-8 h-full rounded-2xl p-8 bg-gradient-to-br from-indigo-900 via-purple-800 to-blue-900">
+            <nav className="lg:hidden flex justify-between items-center bg-gradient-to-br from-indigo-900 via-purple-800 to-blue-900 sticky top-0 left-0 z-[20000] w-full py-4 px-6">
+                <Logo />
+                <div className="flex gap-4">
+                    <IconButton onClick={logout} icon="logout-circle-line" type="success" />
+                    <Link to="/app/friends">
+                        <IconButton icon="chat-ai-line" type="danger" />
+                    </Link>
+                    <IconButton  onClick={()=>setleftAsideSize(leftAsideSize === 250 ? collapseSize : 250)} icon="menu-3-line" type="warning" />
+                </div>
+            </nav>
+
+            <aside className="bg-white fixed top-0 left-0 h-full lg:p-8 overflow-auto z-[20000]" style={{width: leftAsideSize, transition: '0.3s'}}>
+                <div className="space-y-8 h-full lg:rounded-2xl p-8 bg-gradient-to-br from-indigo-900 via-purple-800 to-blue-900">
                     {
                         leftAsideSize === collapseSize ? 
                         <i className="ri-user-fill text-xl text-white animate__animated animate__fadeIn"></i> :
@@ -132,9 +160,13 @@ const Layout = () => {
                 </div>
             </aside>
 
-            <section className="py-8 px-1" style={sectionDimension}>
+            <section className="lg:py-8 lg:px-1 p-6 space-y-8" style={sectionDimension}>
+                {
+                    !isBlacklisted &&
+                    <FreindRequest />
+                }
                 <Card title={ <div className="flex gap-4 items-center">
-                    <button className="bg-gray-100 w-10 h-10 rounded-full hover:bg-slate-200" onClick={ () => setleftAsideSize(leftAsideSize === collapseSize ? 350 : collapseSize) }><i className="ri-arrow-left-line"></i></button>
+                    <button className="lg:block hidden bg-gray-100 w-10 h-10 rounded-full hover:bg-slate-200" onClick={ () => setleftAsideSize(leftAsideSize === collapseSize ? 350 : collapseSize) }><i className="ri-arrow-left-line"></i></button>
                     <h1>{getPathname(pathname)}</h1>
                     </div>
                 } divider>
@@ -142,13 +174,27 @@ const Layout = () => {
                         pathname === '/app' ? <Dashboard /> : <Outlet />
                     }
                 </Card>
+                 {
+                    !isBlacklisted &&
+                    <FriedSuggestion />
+                }
             </section>
 
-            <aside className="bg-white fixed top-0 right-0 h-full p-8 overflow-auto space-y-8" style={{width: rightAsideSize}}>
-                <FreindSuggestion />
-                <FreindRequest />
+            <aside className="lg:block hidden bg-white fixed top-0 right-0 h-full p-8 overflow-auto space-y-8" style={{width: rightAsideSize}}>
+                {/* <FreindSuggestion />
+                <FreindRequest /> */}
 
-                <Card title="Freinds" divider>
+                {
+                    !isBlacklisted &&
+                    <Card title="Friends" divider>
+                        <FreindList gap={6} columns={2} />
+                    </Card>
+                }
+                <Card title="Recent posts" divider>
+
+                </Card>
+
+                {/* <Card title="Freinds" divider>
                     <div className="space-y-4">
                         {
                             Array(20).fill(0).map((item, index) => (
@@ -175,7 +221,7 @@ const Layout = () => {
                             ))
                         }
                     </div>
-                </Card>
+                </Card> */}
             </aside>
         </div>
     )
