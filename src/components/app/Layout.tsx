@@ -11,12 +11,10 @@ import Fetcher from "../../lib/Fetcher"
 import CatchError from "../../lib/CatchError"
 import FriedSuggestion from "./freind/FreindSuggestion"
 import FreindRequest from "./freind/FreindRequest"
-import FreindList from "./freind/FreindList"
 import { useMediaQuery } from 'react-responsive'
 import IconButton from "../shared/IconButton"
 import Logo from "../shared/Logo"
-// import FreindSuggestion from "./FreindSuggestion"
-// import FreindRequest from "./FreindRequest"
+import FreindOnline from "./freind/FreindOnline"
 const EightMinuteInMs = (5*60)*1000
 
 
@@ -25,7 +23,6 @@ const Layout = () => {
     const [leftAsideSize, setleftAsideSize] = useState(0)
     const [collapseSize, setCollapseSize] = useState(0)
     const rightAsideSize = 450
-    // const collapseSize = 140
     const { pathname } = useLocation()
     const navigate = useNavigate()
     const {session, setSession} = useContext(Context)
@@ -181,47 +178,7 @@ const Layout = () => {
             </section>
 
             <aside className="lg:block hidden bg-white fixed top-0 right-0 h-full p-8 overflow-auto space-y-8" style={{width: rightAsideSize}}>
-                {/* <FreindSuggestion />
-                <FreindRequest /> */}
-
-                {
-                    !isBlacklisted &&
-                    <Card title="Friends" divider>
-                        <FreindList gap={6} columns={2} />
-                    </Card>
-                }
-                <Card title="Recent posts" divider>
-
-                </Card>
-
-                {/* <Card title="Freinds" divider>
-                    <div className="space-y-4">
-                        {
-                            Array(20).fill(0).map((item, index) => (
-                                <div key={index} className="bg-gray-50 p-3 rounded-lg flex justify-between">
-                                    <Avatar image="/images/avt.avif" size="md" title="Mohit Gupta" subtitle = { <small className={`${index%2 === 0 ? 'text-green-400' : 'text-zinc-400'} font-medium`}>{index%2 === 0 ? 'Online' : 'Offline'}</small> } />
-                                    <div className="space-x-3">
-                                        <Link to="/app/chat">
-                                            <button className="text-blue-500 hover:text-blue-600" title="Chat">
-                                                <i className="ri-chat-ai-line"></i>
-                                            </button>
-                                        </Link>
-                                        <Link to="/app/audio-chat">
-                                            <button className="text-green-400 hover:text-green-500" title="Call">
-                                                <i className="ri-phone-line"></i>
-                                            </button>
-                                        </Link>
-                                        <Link to="/app/video-chat">
-                                            <button className="text-amber-500 hover:text-amber-600" title="Video call">
-                                                <i className="ri-video-on-ai-line"></i>
-                                            </button>
-                                        </Link>
-                                    </div>
-                                </div>
-                            ))
-                        }
-                    </div>
-                </Card> */}
+                <FreindOnline />
             </aside>
         </div>
     )
