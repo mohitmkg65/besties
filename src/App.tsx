@@ -38,7 +38,7 @@ const App = () => {
               <Route path="freinds" element={<FreindList />}></Route>
               <Route path="video-chat" element={<Video />}></Route>
               <Route path="audio-chat" element={<Audio />}></Route>
-              <Route path="chat" element={<Chat />}></Route>
+              <Route path="chat/:id" element={<Chat />}></Route>
             </Route>
           </Route>
           <Route path="*" element={<NotFound />}></Route>

@@ -30,7 +30,7 @@ const FreindOnline = () => {
                             <h1 className="font-medium">{ item.fullname }</h1>
                             <div className="flex items-center gap-3">
                                 <label className={"text-[10px] font-medium text-green-500 capitalize"}>online</label>
-                                <Link to="/app/chat">
+                                <Link to={`/app/chat/${item.id}`}>
                                     <i className="ri-chat-ai-line text-rose-400"></i>
                                 </Link>
                                 <Link to="/app/audio-chat">
