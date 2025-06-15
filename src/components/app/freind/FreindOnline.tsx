@@ -7,7 +7,6 @@ import Context from "../../../Context"
 const FreindOnline = () => {
     const [onlineUsers, setOnlineUsers] = useState([])
     const {session} = useContext(Context)
-    console.log(onlineUsers)
     const onlineHandler = (users: any) => {
         setOnlineUsers(users)
     }

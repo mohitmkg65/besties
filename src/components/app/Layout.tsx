@@ -46,7 +46,7 @@ const Layout = () => {
     }, [isMobile])
 
     const sectionDimension = {
-        width: isMobile ? '100%' : `calc(100% - ${leftAsideSize + rightAsideSize}px)`,
+        width: isMobile ? '100%' : `calc(100% - ${leftAsideSize}px)`,
         marginLeft: isMobile ? 0 : leftAsideSize,
         transition: '0.3s'
     }
@@ -157,29 +157,31 @@ const Layout = () => {
                 </div>
             </aside>
 
-            <section className="lg:py-8 lg:px-1 p-6 space-y-8" style={sectionDimension}>
-                {
+            <section className="lg:py-8 lg:px-1 p-6 flex flex-1 lg:flex-row flex-col gap-6" style={sectionDimension}>
+                {/* {
                     !isBlacklisted &&
                     <FreindRequest />
-                }
-                <Card title={ <div className="flex gap-4 items-center">
-                    <button className="lg:block hidden bg-gray-100 w-10 h-10 rounded-full hover:bg-slate-200" onClick={ () => setleftAsideSize(leftAsideSize === collapseSize ? 350 : collapseSize) }><i className="ri-arrow-left-line"></i></button>
-                    <h1>{getPathname(pathname)}</h1>
-                    </div>
-                } divider>
-                    {
-                        pathname === '/app' ? <Dashboard /> : <Outlet />
-                    }
-                </Card>
-                 {
+                } */}
+                <div className="">
+                    <Card title={ <div className="flex gap-4 items-center">
+                        <button className="lg:block hidden bg-gray-100 w-10 h-10 rounded-full hover:bg-slate-200" onClick={ () => setleftAsideSize(leftAsideSize === collapseSize ? 350 : collapseSize) }><i className="ri-arrow-left-line"></i></button>
+                        <h1>{getPathname(pathname)}</h1>
+                        </div>
+                    } divider>
+                        {
+                            pathname === '/app' ? <Dashboard /> : <Outlet />
+                        }
+                    </Card>
+                </div>
+                {/* {
                     !isBlacklisted &&
                     <FriedSuggestion />
-                }
+                } */}
+                <aside className="bg-white lg:w-[300px] lg:pr-6">
+                    <FreindOnline />
+                </aside>
             </section>
 
-            <aside className="lg:block hidden bg-white fixed top-0 right-0 h-full p-8 overflow-auto space-y-8" style={{width: rightAsideSize}}>
-                <FreindOnline />
-            </aside>
         </div>
     )
 }
